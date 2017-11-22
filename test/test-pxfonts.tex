@@ -1,0 +1,42 @@
+\NeedsTeXFormat{LaTeX2e}%
+\PassOptionsToPackage{paper=a4}{typearea}%
+\documentclass{scrartcl}%
+\usepackage{pdf14}%
+\usepackage[a4paper,left=2cm,right=2cm,nomarginpar,includeheadfoot,top=1.5cm,headheight=0.85cm,headsep=0.65cm,footskip=1cm,bottom=1cm]{geometry}%
+%\RequirePackage{pxfonts}
+% cf. http://tex.stackexchange.com/a/355532/43807
+% pxfonts {
+\renewcommand{\rmdefault}{pxr}
+\renewcommand{\sfdefault}{pxss}
+% pxfonts }
+\usepackage{graphicx}%
+\makeatletter
+\input{umsa.fd}%
+\input{umsb.fd}%
+\input{uesint.fd}%
+\input{ursfs.fd}%
+\input{Ustmry.fd}%
+\input{uwasy.fd}%
+\RequirePackage{letltxmacro}
+
+\include{totest}%
+
+\renewcommand*{\familydefault}{\rmdefault}%
+
+\newcommand\0{\scalebox{-1}[1]{0}}
+\LetLtxMacro\svttfamily\ttfamily
+\begingroup\ttfamily\endgroup
+\DeclareRobustCommand\ttfamily{%
+\catcode`0=\active
+\svttfamily
+}
+\LetLtxMacro{\svtexttt}{\texttt}
+\DeclareRobustCommand{\texttt}{\begingroup\catcode`0=\active\dotexttt}
+\newcommand\dotexttt[1]{\svtexttt{#1}\endgroup}
+\begingroup\lccode`~=`0 \lowercase{\endgroup\def~}{\0}
+
+\begin{document}
+
+\include{chars}
+
+\end{document}
