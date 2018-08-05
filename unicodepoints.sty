@@ -1,5 +1,7 @@
 % -*- mode: tex -*-
 %-
+% Copyright © 2018
+%	mirabilos <m@mirbsd.org>
 % Copyright © 2017
 %	mirabilos <t.glaser@tarent.de>
 %
@@ -33,7 +35,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2017/11/07 2.1 Unicode codepoints]%
+\ProvidesPackage{unicodepoints}[2018/08/05 2.2 Unicode codepoints]%
 \makeatletter%
 
 \ifx\UTFviii@defined\@undefined%
@@ -199,7 +201,7 @@
 \renewunicodechar{ȳ}{\={y}}%
 \newunicodechar{ȵ}{\textctn}%
 \newunicodechar{ȶ}{\textctt}%
-\newunicodechar{ȷ}{\j}%
+\renewunicodechar{ȷ}{\j}%
 \newunicodechar{ȸ}{\textdblig}%
 \newunicodechar{ȹ}{\textqplig}%
 \newunicodechar{ɐ}{\textturna}%
@@ -324,9 +326,9 @@
 \newunicodechar{˕}{\textlowering{ }}%
 \newunicodechar{˖}{$+$}%
 \newunicodechar{˗}{$-$}%
-\newunicodechar{˙}{\.{ }}%
+\renewunicodechar{˙}{\.{ }}%
 \newunicodechar{˚}{\r{ }}%
-\newunicodechar{˛}{\k{ }}%
+\renewunicodechar{˛}{\k{ }}%
 \newunicodechar{˞}{\textrhoticity}%
 \newunicodechar{ˠ}{\textsuperscript{\textgamma}}%
 \newunicodechar{ˡ}{\textsuperscript{l}}%
@@ -900,7 +902,7 @@
 \newunicodechar{ẗ}{\"{t}}%
 \newunicodechar{ẘ}{\r{w}}%
 \newunicodechar{ẙ}{\r{y}}%
-\newunicodechar{ẞ}{\SS}%
+\renewunicodechar{ẞ}{\SS}%
 \newunicodechar{Ạ}{\d{A}}%
 \newunicodechar{ạ}{\d{a}}%
 \newunicodechar{Ẹ}{\d{E}}%
@@ -1938,6 +1940,7 @@
 \newunicodechar{ﬂ}{fl}%
 \newunicodechar{ﬃ}{ffi}%
 \newunicodechar{ﬄ}{ffl}%
+\renewunicodechar{﻿}{\ifhmode\nobreak\fi}%
 \newunicodechar{𝐀}{$\mathbf{A}$}%
 \newunicodechar{𝐁}{$\mathbf{B}$}%
 \newunicodechar{𝐂}{$\mathbf{C}$}%
