@@ -37,7 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2018/08/16 2.3 Unicode codepoints]%
+\ProvidesPackage{unicodepoints}[2018/08/17 2.3 Unicode codepoints]%
 \makeatletter%
 
 \ifx\UTFviii@defined\@undefined%
@@ -95,7 +95,7 @@
 
 % Render command for ⚠ (U+26A0)
 \DeclareRobustCommand\unicodepoints@warn{%
- \resizebox{!}{\fontcharht\font`A}{%
+ \resizebox{!}{\fontcharht\font`(+\fontchardp\font`)}{%
   \fontencoding{OMS}\fontfamily{cmsy}\fontseries{m}\fontshape{n}\fontsize{20.74}{25}\selectfont%
   \makebox[\fontcharwd\font"34][c]{%
    \makebox[0pt][c]{\color{red}\symbol{"34}}%
