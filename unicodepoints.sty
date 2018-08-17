@@ -37,7 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2018/08/05 2.2 Unicode codepoints]%
+\ProvidesPackage{unicodepoints}[2018/08/16 2.3 Unicode codepoints]%
 \makeatletter%
 
 \ifx\UTFviii@defined\@undefined%
@@ -94,10 +94,16 @@
 }%
 
 % Render command for ⚠ (U+26A0)
-\DeclareRobustCommand\Warning{%
- \makebox[1.4em][c]{%
-  \makebox[0pt][c]{\raisebox{.2em}{\footnotesize!}}%
-  \makebox[0pt][c]{\color{red}\huge$\bigtriangleup$}%
+\DeclareRobustCommand\unicodepoints@warn{%
+ \resizebox{!}{\fontcharht\font`A}{%
+  \fontencoding{OMS}\fontfamily{cmsy}\fontseries{m}\fontshape{n}\fontsize{20.74}{25}\selectfont%
+  \makebox[\fontcharwd\font"34][c]{%
+   \makebox[0pt][c]{\color{red}\symbol{"34}}%
+   \makebox[0pt][c]{\raisebox{2pt}{%
+    \fontencoding{T1}\fontfamily{cmr}\fontsize{11}{13}\selectfont%
+    !%
+   }}%
+  }%
  }%
 }%
 
@@ -1686,7 +1692,7 @@
 \newunicodechar{♲}{\Recycling}%
 \newunicodechar{♿}{\Wheelchair}%
 \newunicodechar{⚒}{\MineSign}%
-\newunicodechar{⚠}{\Warning}%
+\newunicodechar{⚠}{\unicodepoints@warn}%
 \newunicodechar{⚢}{\FemaleFemale}%
 \newunicodechar{⚣}{\MaleMale}%
 \newunicodechar{⚤}{\FemaleMale}%
