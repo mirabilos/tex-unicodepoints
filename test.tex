@@ -5,9 +5,18 @@
 \usepackage[utf8]{inputenc}%
 \usepackage[TS1,LGR,OT2,T2B,T2C,X2,T1]{fontenc}%
 \usepackage{unicodepoints}%
+\usepackage[pdftex,unicode]{hyperref}%
 
 \begin{document}
 
+\section{⮡ Hel‑lo World ⚠}
+
 Hi! ☻
+
+\makeatletter%
+\section{\unicodepointsUni@tarentPfeil{} Hel\unicodepoints@nbdash{}lo World \unicodepoints@warn{}}
+\makeatother%
+
+PDF test.
 
 \end{document}

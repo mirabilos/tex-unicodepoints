@@ -94,7 +94,7 @@
 }%
 
 % Render command for ⚠ (U+26A0)
-\DeclareRobustCommand\unicodepoints@warn{%
+\DeclareRobustCommand\unicodepoints@warn{\texorpdfstring{%
  \resizebox{!}{\fontcharht\font`(+\fontchardp\font`)}{%
   \fontencoding{OMS}\fontfamily{cmsy}\fontseries{m}\fontshape{n}\fontsize{20.74}{25}\selectfont%
   \makebox[\fontcharwd\font"34][c]{%
@@ -105,13 +105,13 @@
    }}%
   }%
  }%
-}%
+}{⚠}}%
 
 % Specific code for below
 \DeclareRobustCommand{\unicodepoints@hphantom}[1]{\hphantom{#1}}%
-\DeclareRobustCommand{\unicodepoints@nbdash}{%
+\DeclareRobustCommand{\unicodepoints@nbdash}{\texorpdfstring{%
  {\fontencoding{T1}\selectfont\symbol{'177}}\nolinebreak\hspace{0pt}%
-}%
+}{‑}}%
 \DeclareRobustCommand{\unicodepoints@flipsym}[1]{\scalebox{-1}[1]{#1}}%
 \DeclareRobustCommand{\unicodepoints@rotsym}[2]{\rotatebox[origin=c]{#1}{#2}}%
 \DeclareRobustCommand{\unicodepoints@sqrt}[1]{%
@@ -121,13 +121,13 @@
   $\sqrt[#1]{\vphantom{a}}$%
  \fi%
 }%
-\DeclareRobustCommand{\unicodepointsUni@tarentPfeil}{%
+\DeclareRobustCommand{\unicodepointsUni@tarentPfeil}{\texorpdfstring{%
  \raisebox{0.2ex}{%
   \scalebox{0.666}{%
    $\mathrel{\raisebox{0.5ex}{$\shortmid$}}\joinrel\rightarrow$%
   }%
  }%
-}%
+}{⮡}}%
 
 % Make a class of thingss robust
 \let\unicodepoints@tone\tone%
