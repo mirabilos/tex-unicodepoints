@@ -44,6 +44,7 @@
  \PackageError{unicodepoints}{This package requires UTF-8 input encoding}%
 \fi%
 
+\RequirePackage{makerobust}%
 \RequirePackage{newunicodechar}%
 \RequirePackage{color}%
 \RequirePackage{graphicx}%
@@ -129,31 +130,18 @@
  }%
 }{⮡}}%
 
-% Make a class of thingss robust
-\let\unicodepoints@tone\tone%
-\DeclareRobustCommand{\tone}[1]{\unicodepoints@tone{#1}}%
-
 % Make some things robust
-\let\unicodepoints@underbar\underbar%
-\DeclareRobustCommand{\underbar}{\unicodepoints@underbar}%
-\let\unicodepoints@overbridge\overbridge%
-\DeclareRobustCommand{\overbridge}{\unicodepoints@overbridge}%
-\let\unicodepoints@subdoublebar\subdoublebar%
-\DeclareRobustCommand{\subdoublebar}{\unicodepoints@subdoublebar}%
-\let\unicodepoints@subdoublevert\subdoublevert%
-\DeclareRobustCommand{\subdoublevert}{\unicodepoints@subdoublevert}%
-\let\unicodepoints@subcorner\subcorner%
-\DeclareRobustCommand{\subcorner}{\unicodepoints@subcorner}%
-\let\unicodepoints@crtilde\crtilde%
-\DeclareRobustCommand{\crtilde}{\unicodepoints@crtilde}%
-\let\unicodepoints@dottedtilde\dottedtilde%
-\DeclareRobustCommand{\dottedtilde}{\unicodepoints@dottedtilde}%
-\let\unicodepoints@doubletilde\doubletilde%
-\DeclareRobustCommand{\doubletilde}{\unicodepoints@doubletilde}%
-\let\unicodepoints@spreadlips\spreadlips%
-\DeclareRobustCommand{\spreadlips}{\unicodepoints@spreadlips}%
-\let\unicodepoints@whistle\whistle%
-\DeclareRobustCommand{\whistle}{\unicodepoints@whistle}%
+\MakeRobustCommand{\tone}%
+\MakeRobustCommand{\underbar}%
+\MakeRobustCommand{\overbridge}%
+\MakeRobustCommand{\subdoublebar}%
+\MakeRobustCommand{\subdoublevert}%
+\MakeRobustCommand{\subcorner}%
+\MakeRobustCommand{\crtilde}%
+\MakeRobustCommand{\dottedtilde}%
+\MakeRobustCommand{\doubletilde}%
+\MakeRobustCommand{\spreadlips}%
+\MakeRobustCommand{\whistle}%
 
 % Individual definitions (sorted)
 \newunicodechar{ħ}{\textcrh}%
