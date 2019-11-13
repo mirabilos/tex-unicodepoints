@@ -37,8 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2019/11/12 2.4 Unicode codepoints]%
-\makeatletter%
+\ProvidesPackage{unicodepoints}[2019/11/12 2.5 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
 
 \ifx\UTFviii@defined\@undefined%
  \PackageError{unicodepoints}{This package requires UTF-8 input encoding}%
@@ -2336,5 +2335,4 @@
 \newunicodechar{𝟾}{$\mathtt{8}$}%
 \newunicodechar{𝟿}{$\mathtt{9}$}%
 
-\makeatother%
 \endinput
