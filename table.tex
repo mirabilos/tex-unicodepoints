@@ -1,0 +1,561 @@
+% Copyright © 2019
+%	mirabilos <t.glaser@tarent.de>
+% Copyright © 2018
+%	Enrico Gregorio <https://tex.stackexchange.com/users/4427/egreg>
+%	via https://tex.stackexchange.com/a/455337/43807
+%
+% This program is published under the Creative Commons BY-SA 4.0 licence
+% which are available at https://creativecommons.org/licenses/by-sa/4.0/
+% and contains UCD 12.1.0 Blocks (DATA FILES) © 2019 Unicode®, Inc. (see
+% inline for related terms).
+%-
+% This file is for demonstration purposes only and not part of the LaTeX
+% package it is shipped with. Expands to 350 longtable̕s, ca. 1588 pages!
+
+\documentclass{article}%
+
+\usepackage[utf8]{inputenc}%
+\usepackage[LY1,TS1,T1]{fontenc}%
+\usepackage[varqu,varl]{inconsolata}%
+\usepackage{array}%
+\usepackage{etoolbox}%
+\usepackage[a4paper, margin=1.5cm]{geometry}%
+\usepackage{longtable}%
+\usepackage{unicodedomino}%
+\usepackage[table]{xcolor}%
+\usepackage{xparse}%
+\usepackage[pdftex,unicode]{hyperref}%
+
+\linespread{1.1}%
+\def\TBLdash{\texorpdfstring%
+ {\unskip\kern.16667em\textemdash\penalty\exhyphenpenalty\hskip.16667em\relax}%
+ { — }%
+}%
+\setlength{\parindent}{0cm}%
+\setlength\extrarowheight{2pt}%
+\setcounter{secnumdepth}{0}%
+
+\makeatletter%
+\newcommand{\utfb@d}{%
+ \cellcolor{gray}%
+}%
+\ExplSyntaxOn
+\NewExpandableDocumentCommand{\utfStreamFromNumber}{m} {
+  \int_compare:nTF { #1 < 32 } {
+    \utfb@d
+  } {
+    \int_compare:nTF { #1 < 127 } {
+      \char_generate:nn { #1 } { 12 }
+    } {
+      \int_compare:nTF { #1 < 160 } {
+	\utfb@d
+      } {
+	\egreg_unicodetoutf:n { #1 }
+      }
+    }
+  }
+}
+
+\cs_new:Nn \egreg_unicodetoutf:n
+ {
+  \__egreg_unicodetoutf:nf { #1 }
+   {
+    \int_compare:nTF { #1 < 2048 }
+     {
+      \__egreg_unicodetoutf_two:n { #1 }
+     }
+     {
+      \int_compare:nTF { #1 < 65536 }
+       {
+        \__egreg_unicodetoutf_three:n { #1 }
+       }
+       {
+        \__egreg_unicodetoutf_four:n { #1 }
+       }
+     }
+   }
+ }
+
+\cs_new:Nn \__egreg_unicodetoutf:nn
+ {
+  \cs_if_exist_use:cF { #2 } { \utfb@d }
+ }
+\cs_generate_variant:Nn \__egreg_unicodetoutf:nn { nf }
+
+\cs_new:Nn \__egreg_unicodetoutf_two:n
+ {
+  u8:
+  \char_generate:nn { 192 + \int_div_truncate:nn { #1 } { 64 } } { 12 }
+  \char_generate:nn { 128 + \int_mod:nn { #1 } { 64 } } { 12 }
+ }
+
+\cs_new:Nn \__egreg_unicodetoutf_three:n
+ {
+  u8:
+  \char_generate:nn { 224 + \int_div_truncate:nn { #1 } { 4096} } { 12 }
+  \char_generate:nn
+   {
+    128 + \int_mod:nn { \int_div_truncate:nn { #1 } { 64 } } { 64 }
+   }
+   { 12 }
+  \char_generate:nn { 128 + \int_mod:nn { #1 } { 64 } } { 12 }
+ }
+
+\cs_new:Nn \__egreg_unicodetoutf_four:n
+ {
+  u8:
+  \char_generate:nn { 240 + \int_div_truncate:nn { #1 } { 262144 } } { 12 }
+  \char_generate:nn
+   {
+    128 + \int_mod:nn { \int_div_truncate:nn { #1 } { 4096 } } { 64 }
+   }
+   { 12 }
+  \char_generate:nn
+   {
+    128 + \int_mod:nn { \int_div_truncate:nn { #1 } { 64 } } { 64 }
+   }
+   { 12 }
+  \char_generate:nn { 128 + \int_mod:nn { #1 } { 64 } } { 12 }
+ }
+\ExplSyntaxOff
+%-
+\newcount\ucst@blecnt%
+\newcount\ucst@blemax%
+\newcommand*\ucst@bleline{}
+\newcommand*\ucst@blerows{}
+\gappto\ucst@bleline{%
+ \strut\UTFviii@hexcodepoint\ucst@blecnt%
+ & \ucst@blecell & \ucst@blecell & \ucst@blecell & \ucst@blecell%
+ & \ucst@blecell & \ucst@blecell & \ucst@blecell & \ucst@blecell%
+ & \ucst@blecell & \ucst@blecell & \ucst@blecell & \ucst@blecell%
+ & \ucst@blecell & \ucst@blecell & \ucst@blecell & \ucst@blecell%
+ \strut\\\hline%
+}%
+\newcommand{\ucst@blecell}{%
+ \utfStreamFromNumber{\ucst@blecnt}\strut%
+ \global\advance\ucst@blecnt\@ne%
+}%
+\newcommand{\uniblock}[3]{%
+ \ucst@blecnt"#1%
+ \ucst@blemax"#2%
+ \renewcommand*\ucst@blerows{}
+ \loop
+  \gappto\ucst@blerows{\ucst@bleline}%
+  \advance\ucst@blecnt16%
+ \ifnum\ucst@blecnt<\ucst@blemax\repeat%
+ \global\ucst@blecnt"#1%
+
+\subsection{#3}
+
+\begin{longtable}{| >{\ttfamily}r || l | l | l | l | l | l | l | l || l | l | l | l | l | l | l | l |}
+ \hline%
+ \strut{\rmfamily\textit{offset\strut}}
+  & \texttt{\textbf{+0}} & \texttt{\textbf{+1}} & \texttt{\textbf{+2}} & \texttt{\textbf{+3}}
+  & \texttt{\textbf{+4}} & \texttt{\textbf{+5}} & \texttt{\textbf{+6}} & \texttt{\textbf{+7}}
+  & \texttt{\textbf{+8}} & \texttt{\textbf{+9}} & \texttt{\textbf{+A}} & \texttt{\textbf{+B}}
+  & \texttt{\textbf{+C}} & \texttt{\textbf{+D}} & \texttt{\textbf{+E}} & \texttt{\textbf{+F}}
+ \\\hline\hline
+\endfirsthead
+ \multicolumn{17}{|r|}{\footnotesize\textit{(continued from previous page…)}}\\\hline
+ \strut{\rmfamily\textit{offset\strut}}
+  & \texttt{\textbf{+0}} & \texttt{\textbf{+1}} & \texttt{\textbf{+2}} & \texttt{\textbf{+3}}
+  & \texttt{\textbf{+4}} & \texttt{\textbf{+5}} & \texttt{\textbf{+6}} & \texttt{\textbf{+7}}
+  & \texttt{\textbf{+8}} & \texttt{\textbf{+9}} & \texttt{\textbf{+A}} & \texttt{\textbf{+B}}
+  & \texttt{\textbf{+C}} & \texttt{\textbf{+D}} & \texttt{\textbf{+E}} & \texttt{\textbf{+F}}
+ \\\hline\hline
+\endhead
+ \multicolumn{17}{|r|}{\footnotesize\textit{(continued on next page…)}}\\\hline
+\endfoot
+ \hline
+\endlastfoot
+\ucst@blerows
+\end{longtable}
+
+}%
+\makeatother%
+
+\begin{document}
+
+ {\sffamily\tableofcontents}
+
+% Permission is hereby granted, free of charge, to any person obtaining
+% a copy of the Unicode data files and any associated documentation
+% (the "Data Files") or Unicode software and any associated documentation
+% (the "Software") to deal in the Data Files or Software
+% without restriction, including without limitation the rights to use,
+% copy, modify, merge, publish, distribute, and/or sell copies of
+% the Data Files or Software, and to permit persons to whom the Data Files
+% or Software are furnished to do so, provided that either
+% (a) this copyright and permission notice appear with all copies
+% of the Data Files or Software, or
+% (b) this copyright and permission notice appear in associated
+% Documentation.
+%
+% THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+% ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+% WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+% NONINFRINGEMENT OF THIRD PARTY RIGHTS.
+% IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
+% NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+% DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+% DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+% TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+% PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+%
+% Except as contained in this notice, the name of a copyright holder
+% shall not be used in advertising or otherwise to promote the sale,
+% use or other dealings in these Data Files or Software without prior
+% written authorization of the copyright holder.
+
+\uniblock{0000}{0080}{U+0000..U+007F \TBLdash Basic Latin}
+\uniblock{0080}{0100}{U+0080..U+00FF \TBLdash Latin-1 Supplement}
+\uniblock{0100}{0180}{U+0100..U+017F \TBLdash Latin Extended-A}
+\uniblock{0180}{0250}{U+0180..U+024F \TBLdash Latin Extended-B}
+\uniblock{0250}{02B0}{U+0250..U+02AF \TBLdash IPA Extensions}
+\uniblock{02B0}{0300}{U+02B0..U+02FF \TBLdash Spacing Modifier Letters}
+\uniblock{0300}{0370}{U+0300..U+036F \TBLdash Combining Diacritical Marks}
+\uniblock{0370}{0400}{U+0370..U+03FF \TBLdash Greek and Coptic}
+\uniblock{0400}{0500}{U+0400..U+04FF \TBLdash Cyrillic}
+\uniblock{0500}{0530}{U+0500..U+052F \TBLdash Cyrillic Supplement}
+\uniblock{0530}{0590}{U+0530..U+058F \TBLdash Armenian}
+\uniblock{0590}{0600}{U+0590..U+05FF \TBLdash Hebrew}
+\uniblock{0600}{0700}{U+0600..U+06FF \TBLdash Arabic}
+\uniblock{0700}{0750}{U+0700..U+074F \TBLdash Syriac}
+\uniblock{0750}{0780}{U+0750..U+077F \TBLdash Arabic Supplement}
+\uniblock{0780}{07C0}{U+0780..U+07BF \TBLdash Thaana}
+\uniblock{07C0}{0800}{U+07C0..U+07FF \TBLdash NKo}
+\uniblock{0800}{0840}{U+0800..U+083F \TBLdash Samaritan}
+\uniblock{0840}{0860}{U+0840..U+085F \TBLdash Mandaic}
+\uniblock{0860}{0870}{U+0860..U+086F \TBLdash Syriac Supplement}
+\uniblock{0870}{08A0}{U+0870..U+089F \TBLdash No\_Block}
+\uniblock{08A0}{0900}{U+08A0..U+08FF \TBLdash Arabic Extended-A}
+\uniblock{0900}{0980}{U+0900..U+097F \TBLdash Devanagari}
+\uniblock{0980}{0A00}{U+0980..U+09FF \TBLdash Bengali}
+\uniblock{0A00}{0A80}{U+0A00..U+0A7F \TBLdash Gurmukhi}
+\uniblock{0A80}{0B00}{U+0A80..U+0AFF \TBLdash Gujarati}
+\uniblock{0B00}{0B80}{U+0B00..U+0B7F \TBLdash Oriya}
+\uniblock{0B80}{0C00}{U+0B80..U+0BFF \TBLdash Tamil}
+\uniblock{0C00}{0C80}{U+0C00..U+0C7F \TBLdash Telugu}
+\uniblock{0C80}{0D00}{U+0C80..U+0CFF \TBLdash Kannada}
+\uniblock{0D00}{0D80}{U+0D00..U+0D7F \TBLdash Malayalam}
+\uniblock{0D80}{0E00}{U+0D80..U+0DFF \TBLdash Sinhala}
+\uniblock{0E00}{0E80}{U+0E00..U+0E7F \TBLdash Thai}
+\uniblock{0E80}{0F00}{U+0E80..U+0EFF \TBLdash Lao}
+\uniblock{0F00}{1000}{U+0F00..U+0FFF \TBLdash Tibetan}
+\uniblock{1000}{10A0}{U+1000..U+109F \TBLdash Myanmar}
+\uniblock{10A0}{1100}{U+10A0..U+10FF \TBLdash Georgian}
+\uniblock{1100}{1200}{U+1100..U+11FF \TBLdash Hangul Jamo}
+\uniblock{1200}{1380}{U+1200..U+137F \TBLdash Ethiopic}
+\uniblock{1380}{13A0}{U+1380..U+139F \TBLdash Ethiopic Supplement}
+\uniblock{13A0}{1400}{U+13A0..U+13FF \TBLdash Cherokee}
+\uniblock{1400}{1680}{U+1400..U+167F \TBLdash Unified Canadian Aboriginal Syllabics}
+\uniblock{1680}{16A0}{U+1680..U+169F \TBLdash Ogham}
+\uniblock{16A0}{1700}{U+16A0..U+16FF \TBLdash Runic}
+\uniblock{1700}{1720}{U+1700..U+171F \TBLdash Tagalog}
+\uniblock{1720}{1740}{U+1720..U+173F \TBLdash Hanunoo}
+\uniblock{1740}{1760}{U+1740..U+175F \TBLdash Buhid}
+\uniblock{1760}{1780}{U+1760..U+177F \TBLdash Tagbanwa}
+\uniblock{1780}{1800}{U+1780..U+17FF \TBLdash Khmer}
+\uniblock{1800}{18B0}{U+1800..U+18AF \TBLdash Mongolian}
+\uniblock{18B0}{1900}{U+18B0..U+18FF \TBLdash Unified Canadian Aboriginal Syllabics Extended}
+\uniblock{1900}{1950}{U+1900..U+194F \TBLdash Limbu}
+\uniblock{1950}{1980}{U+1950..U+197F \TBLdash Tai Le}
+\uniblock{1980}{19E0}{U+1980..U+19DF \TBLdash New Tai Lue}
+\uniblock{19E0}{1A00}{U+19E0..U+19FF \TBLdash Khmer Symbols}
+\uniblock{1A00}{1A20}{U+1A00..U+1A1F \TBLdash Buginese}
+\uniblock{1A20}{1AB0}{U+1A20..U+1AAF \TBLdash Tai Tham}
+\uniblock{1AB0}{1B00}{U+1AB0..U+1AFF \TBLdash Combining Diacritical Marks Extended}
+\uniblock{1B00}{1B80}{U+1B00..U+1B7F \TBLdash Balinese}
+\uniblock{1B80}{1BC0}{U+1B80..U+1BBF \TBLdash Sundanese}
+\uniblock{1BC0}{1C00}{U+1BC0..U+1BFF \TBLdash Batak}
+\uniblock{1C00}{1C50}{U+1C00..U+1C4F \TBLdash Lepcha}
+\uniblock{1C50}{1C80}{U+1C50..U+1C7F \TBLdash Ol Chiki}
+\uniblock{1C80}{1C90}{U+1C80..U+1C8F \TBLdash Cyrillic Extended-C}
+\uniblock{1C90}{1CC0}{U+1C90..U+1CBF \TBLdash Georgian Extended}
+\uniblock{1CC0}{1CD0}{U+1CC0..U+1CCF \TBLdash Sundanese Supplement}
+\uniblock{1CD0}{1D00}{U+1CD0..U+1CFF \TBLdash Vedic Extensions}
+\uniblock{1D00}{1D80}{U+1D00..U+1D7F \TBLdash Phonetic Extensions}
+\uniblock{1D80}{1DC0}{U+1D80..U+1DBF \TBLdash Phonetic Extensions Supplement}
+\uniblock{1DC0}{1E00}{U+1DC0..U+1DFF \TBLdash Combining Diacritical Marks Supplement}
+\uniblock{1E00}{1F00}{U+1E00..U+1EFF \TBLdash Latin Extended Additional}
+\uniblock{1F00}{2000}{U+1F00..U+1FFF \TBLdash Greek Extended}
+\uniblock{2000}{2070}{U+2000..U+206F \TBLdash General Punctuation}
+\uniblock{2070}{20A0}{U+2070..U+209F \TBLdash Superscripts and Subscripts}
+\uniblock{20A0}{20D0}{U+20A0..U+20CF \TBLdash Currency Symbols}
+\uniblock{20D0}{2100}{U+20D0..U+20FF \TBLdash Combining Diacritical Marks for Symbols}
+\uniblock{2100}{2150}{U+2100..U+214F \TBLdash Letterlike Symbols}
+\uniblock{2150}{2190}{U+2150..U+218F \TBLdash Number Forms}
+\uniblock{2190}{2200}{U+2190..U+21FF \TBLdash Arrows}
+\uniblock{2200}{2300}{U+2200..U+22FF \TBLdash Mathematical Operators}
+\uniblock{2300}{2400}{U+2300..U+23FF \TBLdash Miscellaneous Technical}
+\uniblock{2400}{2440}{U+2400..U+243F \TBLdash Control Pictures}
+\uniblock{2440}{2460}{U+2440..U+245F \TBLdash Optical Character Recognition}
+\uniblock{2460}{2500}{U+2460..U+24FF \TBLdash Enclosed Alphanumerics}
+\uniblock{2500}{2580}{U+2500..U+257F \TBLdash Box Drawing}
+\uniblock{2580}{25A0}{U+2580..U+259F \TBLdash Block Elements}
+\uniblock{25A0}{2600}{U+25A0..U+25FF \TBLdash Geometric Shapes}
+\uniblock{2600}{2700}{U+2600..U+26FF \TBLdash Miscellaneous Symbols}
+\uniblock{2700}{27C0}{U+2700..U+27BF \TBLdash Dingbats}
+\uniblock{27C0}{27F0}{U+27C0..U+27EF \TBLdash Miscellaneous Mathematical Symbols-A}
+\uniblock{27F0}{2800}{U+27F0..U+27FF \TBLdash Supplemental Arrows-A}
+\uniblock{2800}{2900}{U+2800..U+28FF \TBLdash Braille Patterns}
+\uniblock{2900}{2980}{U+2900..U+297F \TBLdash Supplemental Arrows-B}
+\uniblock{2980}{2A00}{U+2980..U+29FF \TBLdash Miscellaneous Mathematical Symbols-B}
+\uniblock{2A00}{2B00}{U+2A00..U+2AFF \TBLdash Supplemental Mathematical Operators}
+\uniblock{2B00}{2C00}{U+2B00..U+2BFF \TBLdash Miscellaneous Symbols and Arrows}
+\uniblock{2C00}{2C60}{U+2C00..U+2C5F \TBLdash Glagolitic}
+\uniblock{2C60}{2C80}{U+2C60..U+2C7F \TBLdash Latin Extended-C}
+\uniblock{2C80}{2D00}{U+2C80..U+2CFF \TBLdash Coptic}
+\uniblock{2D00}{2D30}{U+2D00..U+2D2F \TBLdash Georgian Supplement}
+\uniblock{2D30}{2D80}{U+2D30..U+2D7F \TBLdash Tifinagh}
+\uniblock{2D80}{2DE0}{U+2D80..U+2DDF \TBLdash Ethiopic Extended}
+\uniblock{2DE0}{2E00}{U+2DE0..U+2DFF \TBLdash Cyrillic Extended-A}
+\uniblock{2E00}{2E80}{U+2E00..U+2E7F \TBLdash Supplemental Punctuation}
+\uniblock{2E80}{2F00}{U+2E80..U+2EFF \TBLdash CJK Radicals Supplement}
+\uniblock{2F00}{2FE0}{U+2F00..U+2FDF \TBLdash Kangxi Radicals}
+\uniblock{2FE0}{2FF0}{U+2FE0..U+2FEF \TBLdash No\_Block}
+\uniblock{2FF0}{3000}{U+2FF0..U+2FFF \TBLdash Ideographic Description Characters}
+\uniblock{3000}{3040}{U+3000..U+303F \TBLdash CJK Symbols and Punctuation}
+\uniblock{3040}{30A0}{U+3040..U+309F \TBLdash Hiragana}
+\uniblock{30A0}{3100}{U+30A0..U+30FF \TBLdash Katakana}
+\uniblock{3100}{3130}{U+3100..U+312F \TBLdash Bopomofo}
+\uniblock{3130}{3190}{U+3130..U+318F \TBLdash Hangul Compatibility Jamo}
+\uniblock{3190}{31A0}{U+3190..U+319F \TBLdash Kanbun}
+\uniblock{31A0}{31C0}{U+31A0..U+31BF \TBLdash Bopomofo Extended}
+\uniblock{31C0}{31F0}{U+31C0..U+31EF \TBLdash CJK Strokes}
+\uniblock{31F0}{3200}{U+31F0..U+31FF \TBLdash Katakana Phonetic Extensions}
+\uniblock{3200}{3300}{U+3200..U+32FF \TBLdash Enclosed CJK Letters and Months}
+\uniblock{3300}{3400}{U+3300..U+33FF \TBLdash CJK Compatibility}
+\uniblock{3400}{4DC0}{U+3400..U+4DBF \TBLdash CJK Unified Ideographs Extension A}
+\uniblock{4DC0}{4E00}{U+4DC0..U+4DFF \TBLdash Yijing Hexagram Symbols}
+\uniblock{4E00}{A000}{U+4E00..U+9FFF \TBLdash CJK Unified Ideographs}
+\uniblock{A000}{A490}{U+A000..U+A48F \TBLdash Yi Syllables}
+\uniblock{A490}{A4D0}{U+A490..U+A4CF \TBLdash Yi Radicals}
+\uniblock{A4D0}{A500}{U+A4D0..U+A4FF \TBLdash Lisu}
+\uniblock{A500}{A640}{U+A500..U+A63F \TBLdash Vai}
+\uniblock{A640}{A6A0}{U+A640..U+A69F \TBLdash Cyrillic Extended-B}
+\uniblock{A6A0}{A700}{U+A6A0..U+A6FF \TBLdash Bamum}
+\uniblock{A700}{A720}{U+A700..U+A71F \TBLdash Modifier Tone Letters}
+\uniblock{A720}{A800}{U+A720..U+A7FF \TBLdash Latin Extended-D}
+\uniblock{A800}{A830}{U+A800..U+A82F \TBLdash Syloti Nagri}
+\uniblock{A830}{A840}{U+A830..U+A83F \TBLdash Common Indic Number Forms}
+\uniblock{A840}{A880}{U+A840..U+A87F \TBLdash Phags-pa}
+\uniblock{A880}{A8E0}{U+A880..U+A8DF \TBLdash Saurashtra}
+\uniblock{A8E0}{A900}{U+A8E0..U+A8FF \TBLdash Devanagari Extended}
+\uniblock{A900}{A930}{U+A900..U+A92F \TBLdash Kayah Li}
+\uniblock{A930}{A960}{U+A930..U+A95F \TBLdash Rejang}
+\uniblock{A960}{A980}{U+A960..U+A97F \TBLdash Hangul Jamo Extended-A}
+\uniblock{A980}{A9E0}{U+A980..U+A9DF \TBLdash Javanese}
+\uniblock{A9E0}{AA00}{U+A9E0..U+A9FF \TBLdash Myanmar Extended-B}
+\uniblock{AA00}{AA60}{U+AA00..U+AA5F \TBLdash Cham}
+\uniblock{AA60}{AA80}{U+AA60..U+AA7F \TBLdash Myanmar Extended-A}
+\uniblock{AA80}{AAE0}{U+AA80..U+AADF \TBLdash Tai Viet}
+\uniblock{AAE0}{AB00}{U+AAE0..U+AAFF \TBLdash Meetei Mayek Extensions}
+\uniblock{AB00}{AB30}{U+AB00..U+AB2F \TBLdash Ethiopic Extended-A}
+\uniblock{AB30}{AB70}{U+AB30..U+AB6F \TBLdash Latin Extended-E}
+\uniblock{AB70}{ABC0}{U+AB70..U+ABBF \TBLdash Cherokee Supplement}
+\uniblock{ABC0}{AC00}{U+ABC0..U+ABFF \TBLdash Meetei Mayek}
+\uniblock{AC00}{D7B0}{U+AC00..U+D7AF \TBLdash Hangul Syllables}
+\uniblock{D7B0}{D800}{U+D7B0..U+D7FF \TBLdash Hangul Jamo Extended-B}
+\uniblock{E000}{F900}{U+E000..U+F8FF \TBLdash Private Use Area}
+\uniblock{F900}{FB00}{U+F900..U+FAFF \TBLdash CJK Compatibility Ideographs}
+\uniblock{FB00}{FB50}{U+FB00..U+FB4F \TBLdash Alphabetic Presentation Forms}
+\uniblock{FB50}{FE00}{U+FB50..U+FDFF \TBLdash Arabic Presentation Forms-A}
+\uniblock{FE00}{FE10}{U+FE00..U+FE0F \TBLdash Variation Selectors}
+\uniblock{FE10}{FE20}{U+FE10..U+FE1F \TBLdash Vertical Forms}
+\uniblock{FE20}{FE30}{U+FE20..U+FE2F \TBLdash Combining Half Marks}
+\uniblock{FE30}{FE50}{U+FE30..U+FE4F \TBLdash CJK Compatibility Forms}
+\uniblock{FE50}{FE70}{U+FE50..U+FE6F \TBLdash Small Form Variants}
+\uniblock{FE70}{FF00}{U+FE70..U+FEFF \TBLdash Arabic Presentation Forms-B}
+\uniblock{FF00}{FFF0}{U+FF00..U+FFEF \TBLdash Halfwidth and Fullwidth Forms}
+\uniblock{FFF0}{0000}{U+FFF0..U+FFFF \TBLdash Specials}
+\uniblock{00010000}{00010080}{U-00010000..U-0001007F \TBLdash Linear B Syllabary}
+\uniblock{00010080}{00010100}{U-00010080..U-000100FF \TBLdash Linear B Ideograms}
+\uniblock{00010100}{00010140}{U-00010100..U-0001013F \TBLdash Aegean Numbers}
+\uniblock{00010140}{00010190}{U-00010140..U-0001018F \TBLdash Ancient Greek Numbers}
+\uniblock{00010190}{000101D0}{U-00010190..U-000101CF \TBLdash Ancient Symbols}
+\uniblock{000101D0}{00010200}{U-000101D0..U-000101FF \TBLdash Phaistos Disc}
+\uniblock{00010200}{00010280}{U-00010200..U-0001027F \TBLdash No\_Block}
+\uniblock{00010280}{000102A0}{U-00010280..U-0001029F \TBLdash Lycian}
+\uniblock{000102A0}{000102E0}{U-000102A0..U-000102DF \TBLdash Carian}
+\uniblock{000102E0}{00010300}{U-000102E0..U-000102FF \TBLdash Coptic Epact Numbers}
+\uniblock{00010300}{00010330}{U-00010300..U-0001032F \TBLdash Old Italic}
+\uniblock{00010330}{00010350}{U-00010330..U-0001034F \TBLdash Gothic}
+\uniblock{00010350}{00010380}{U-00010350..U-0001037F \TBLdash Old Permic}
+\uniblock{00010380}{000103A0}{U-00010380..U-0001039F \TBLdash Ugaritic}
+\uniblock{000103A0}{000103E0}{U-000103A0..U-000103DF \TBLdash Old Persian}
+\uniblock{000103E0}{00010400}{U-000103E0..U-000103FF \TBLdash No\_Block}
+\uniblock{00010400}{00010450}{U-00010400..U-0001044F \TBLdash Deseret}
+\uniblock{00010450}{00010480}{U-00010450..U-0001047F \TBLdash Shavian}
+\uniblock{00010480}{000104B0}{U-00010480..U-000104AF \TBLdash Osmanya}
+\uniblock{000104B0}{00010500}{U-000104B0..U-000104FF \TBLdash Osage}
+\uniblock{00010500}{00010530}{U-00010500..U-0001052F \TBLdash Elbasan}
+\uniblock{00010530}{00010570}{U-00010530..U-0001056F \TBLdash Caucasian Albanian}
+\uniblock{00010570}{00010600}{U-00010570..U-000105FF \TBLdash No\_Block}
+\uniblock{00010600}{00010780}{U-00010600..U-0001077F \TBLdash Linear A}
+\uniblock{00010780}{00010800}{U-00010780..U-000107FF \TBLdash No\_Block}
+\uniblock{00010800}{00010840}{U-00010800..U-0001083F \TBLdash Cypriot Syllabary}
+\uniblock{00010840}{00010860}{U-00010840..U-0001085F \TBLdash Imperial Aramaic}
+\uniblock{00010860}{00010880}{U-00010860..U-0001087F \TBLdash Palmyrene}
+\uniblock{00010880}{000108B0}{U-00010880..U-000108AF \TBLdash Nabataean}
+\uniblock{000108B0}{000108E0}{U-000108B0..U-000108DF \TBLdash No\_Block}
+\uniblock{000108E0}{00010900}{U-000108E0..U-000108FF \TBLdash Hatran}
+\uniblock{00010900}{00010920}{U-00010900..U-0001091F \TBLdash Phoenician}
+\uniblock{00010920}{00010940}{U-00010920..U-0001093F \TBLdash Lydian}
+\uniblock{00010940}{00010980}{U-00010940..U-0001097F \TBLdash No\_Block}
+\uniblock{00010980}{000109A0}{U-00010980..U-0001099F \TBLdash Meroitic Hieroglyphs}
+\uniblock{000109A0}{00010A00}{U-000109A0..U-000109FF \TBLdash Meroitic Cursive}
+\uniblock{00010A00}{00010A60}{U-00010A00..U-00010A5F \TBLdash Kharoshthi}
+\uniblock{00010A60}{00010A80}{U-00010A60..U-00010A7F \TBLdash Old South Arabian}
+\uniblock{00010A80}{00010AA0}{U-00010A80..U-00010A9F \TBLdash Old North Arabian}
+\uniblock{00010AA0}{00010AC0}{U-00010AA0..U-00010ABF \TBLdash No\_Block}
+\uniblock{00010AC0}{00010B00}{U-00010AC0..U-00010AFF \TBLdash Manichaean}
+\uniblock{00010B00}{00010B40}{U-00010B00..U-00010B3F \TBLdash Avestan}
+\uniblock{00010B40}{00010B60}{U-00010B40..U-00010B5F \TBLdash Inscriptional Parthian}
+\uniblock{00010B60}{00010B80}{U-00010B60..U-00010B7F \TBLdash Inscriptional Pahlavi}
+\uniblock{00010B80}{00010BB0}{U-00010B80..U-00010BAF \TBLdash Psalter Pahlavi}
+\uniblock{00010BB0}{00010C00}{U-00010BB0..U-00010BFF \TBLdash No\_Block}
+\uniblock{00010C00}{00010C50}{U-00010C00..U-00010C4F \TBLdash Old Turkic}
+\uniblock{00010C50}{00010C80}{U-00010C50..U-00010C7F \TBLdash No\_Block}
+\uniblock{00010C80}{00010D00}{U-00010C80..U-00010CFF \TBLdash Old Hungarian}
+\uniblock{00010D00}{00010D40}{U-00010D00..U-00010D3F \TBLdash Hanifi Rohingya}
+\uniblock{00010D40}{00010E60}{U-00010D40..U-00010E5F \TBLdash No\_Block}
+\uniblock{00010E60}{00010E80}{U-00010E60..U-00010E7F \TBLdash Rumi Numeral Symbols}
+\uniblock{00010E80}{00010F00}{U-00010E80..U-00010EFF \TBLdash No\_Block}
+\uniblock{00010F00}{00010F30}{U-00010F00..U-00010F2F \TBLdash Old Sogdian}
+\uniblock{00010F30}{00010F70}{U-00010F30..U-00010F6F \TBLdash Sogdian}
+\uniblock{00010F70}{00010FE0}{U-00010F70..U-00010FDF \TBLdash No\_Block}
+\uniblock{00010FE0}{00011000}{U-00010FE0..U-00010FFF \TBLdash Elymaic}
+\uniblock{00011000}{00011080}{U-00011000..U-0001107F \TBLdash Brahmi}
+\uniblock{00011080}{000110D0}{U-00011080..U-000110CF \TBLdash Kaithi}
+\uniblock{000110D0}{00011100}{U-000110D0..U-000110FF \TBLdash Sora Sompeng}
+\uniblock{00011100}{00011150}{U-00011100..U-0001114F \TBLdash Chakma}
+\uniblock{00011150}{00011180}{U-00011150..U-0001117F \TBLdash Mahajani}
+\uniblock{00011180}{000111E0}{U-00011180..U-000111DF \TBLdash Sharada}
+\uniblock{000111E0}{00011200}{U-000111E0..U-000111FF \TBLdash Sinhala Archaic Numbers}
+\uniblock{00011200}{00011250}{U-00011200..U-0001124F \TBLdash Khojki}
+\uniblock{00011250}{00011280}{U-00011250..U-0001127F \TBLdash No\_Block}
+\uniblock{00011280}{000112B0}{U-00011280..U-000112AF \TBLdash Multani}
+\uniblock{000112B0}{00011300}{U-000112B0..U-000112FF \TBLdash Khudawadi}
+\uniblock{00011300}{00011380}{U-00011300..U-0001137F \TBLdash Grantha}
+\uniblock{00011380}{00011400}{U-00011380..U-000113FF \TBLdash No\_Block}
+\uniblock{00011400}{00011480}{U-00011400..U-0001147F \TBLdash Newa}
+\uniblock{00011480}{000114E0}{U-00011480..U-000114DF \TBLdash Tirhuta}
+\uniblock{000114E0}{00011580}{U-000114E0..U-0001157F \TBLdash No\_Block}
+\uniblock{00011580}{00011600}{U-00011580..U-000115FF \TBLdash Siddham}
+\uniblock{00011600}{00011660}{U-00011600..U-0001165F \TBLdash Modi}
+\uniblock{00011660}{00011680}{U-00011660..U-0001167F \TBLdash Mongolian Supplement}
+\uniblock{00011680}{000116D0}{U-00011680..U-000116CF \TBLdash Takri}
+\uniblock{000116D0}{00011700}{U-000116D0..U-000116FF \TBLdash No\_Block}
+\uniblock{00011700}{00011740}{U-00011700..U-0001173F \TBLdash Ahom}
+\uniblock{00011740}{00011800}{U-00011740..U-000117FF \TBLdash No\_Block}
+\uniblock{00011800}{00011850}{U-00011800..U-0001184F \TBLdash Dogra}
+\uniblock{00011850}{000118A0}{U-00011850..U-0001189F \TBLdash No\_Block}
+\uniblock{000118A0}{00011900}{U-000118A0..U-000118FF \TBLdash Warang Citi}
+\uniblock{00011900}{000119A0}{U-00011900..U-0001199F \TBLdash No\_Block}
+\uniblock{000119A0}{00011A00}{U-000119A0..U-000119FF \TBLdash Nandinagari}
+\uniblock{00011A00}{00011A50}{U-00011A00..U-00011A4F \TBLdash Zanabazar Square}
+\uniblock{00011A50}{00011AB0}{U-00011A50..U-00011AAF \TBLdash Soyombo}
+\uniblock{00011AB0}{00011AC0}{U-00011AB0..U-00011ABF \TBLdash No\_Block}
+\uniblock{00011AC0}{00011B00}{U-00011AC0..U-00011AFF \TBLdash Pau Cin Hau}
+\uniblock{00011B00}{00011C00}{U-00011B00..U-00011BFF \TBLdash No\_Block}
+\uniblock{00011C00}{00011C70}{U-00011C00..U-00011C6F \TBLdash Bhaiksuki}
+\uniblock{00011C70}{00011CC0}{U-00011C70..U-00011CBF \TBLdash Marchen}
+\uniblock{00011CC0}{00011D00}{U-00011CC0..U-00011CFF \TBLdash No\_Block}
+\uniblock{00011D00}{00011D60}{U-00011D00..U-00011D5F \TBLdash Masaram Gondi}
+\uniblock{00011D60}{00011DB0}{U-00011D60..U-00011DAF \TBLdash Gunjala Gondi}
+\uniblock{00011DB0}{00011EE0}{U-00011DB0..U-00011EDF \TBLdash No\_Block}
+\uniblock{00011EE0}{00011F00}{U-00011EE0..U-00011EFF \TBLdash Makasar}
+\uniblock{00011F00}{00011FC0}{U-00011F00..U-00011FBF \TBLdash No\_Block}
+\uniblock{00011FC0}{00012000}{U-00011FC0..U-00011FFF \TBLdash Tamil Supplement}
+\uniblock{00012000}{00012400}{U-00012000..U-000123FF \TBLdash Cuneiform}
+\uniblock{00012400}{00012480}{U-00012400..U-0001247F \TBLdash Cuneiform Numbers and Punctuation}
+\uniblock{00012480}{00012550}{U-00012480..U-0001254F \TBLdash Early Dynastic Cuneiform}
+\uniblock{00012550}{00013000}{U-00012550..U-00012FFF \TBLdash No\_Block}
+\uniblock{00013000}{00013430}{U-00013000..U-0001342F \TBLdash Egyptian Hieroglyphs}
+\uniblock{00013430}{00013440}{U-00013430..U-0001343F \TBLdash Egyptian Hieroglyph Format Controls}
+\uniblock{00013440}{00014400}{U-00013440..U-000143FF \TBLdash No\_Block}
+\uniblock{00014400}{00014680}{U-00014400..U-0001467F \TBLdash Anatolian Hieroglyphs}
+\uniblock{00014680}{00016800}{U-00014680..U-000167FF \TBLdash No\_Block}
+\uniblock{00016800}{00016A40}{U-00016800..U-00016A3F \TBLdash Bamum Supplement}
+\uniblock{00016A40}{00016A70}{U-00016A40..U-00016A6F \TBLdash Mro}
+\uniblock{00016A70}{00016AD0}{U-00016A70..U-00016ACF \TBLdash No\_Block}
+\uniblock{00016AD0}{00016B00}{U-00016AD0..U-00016AFF \TBLdash Bassa Vah}
+\uniblock{00016B00}{00016B90}{U-00016B00..U-00016B8F \TBLdash Pahawh Hmong}
+\uniblock{00016B90}{00016E40}{U-00016B90..U-00016E3F \TBLdash No\_Block}
+\uniblock{00016E40}{00016EA0}{U-00016E40..U-00016E9F \TBLdash Medefaidrin}
+\uniblock{00016EA0}{00016F00}{U-00016EA0..U-00016EFF \TBLdash No\_Block}
+\uniblock{00016F00}{00016FA0}{U-00016F00..U-00016F9F \TBLdash Miao}
+\uniblock{00016FA0}{00016FE0}{U-00016FA0..U-00016FDF \TBLdash No\_Block}
+\uniblock{00016FE0}{00017000}{U-00016FE0..U-00016FFF \TBLdash Ideographic Symbols and Punctuation}
+\uniblock{00017000}{00018800}{U-00017000..U-000187FF \TBLdash Tangut}
+\uniblock{00018800}{00018B00}{U-00018800..U-00018AFF \TBLdash Tangut Components}
+\uniblock{00018B00}{0001B000}{U-00018B00..U-0001AFFF \TBLdash No\_Block}
+\uniblock{0001B000}{0001B100}{U-0001B000..U-0001B0FF \TBLdash Kana Supplement}
+\uniblock{0001B100}{0001B130}{U-0001B100..U-0001B12F \TBLdash Kana Extended-A}
+\uniblock{0001B130}{0001B170}{U-0001B130..U-0001B16F \TBLdash Small Kana Extension}
+\uniblock{0001B170}{0001B300}{U-0001B170..U-0001B2FF \TBLdash Nushu}
+\uniblock{0001B300}{0001BC00}{U-0001B300..U-0001BBFF \TBLdash No\_Block}
+\uniblock{0001BC00}{0001BCA0}{U-0001BC00..U-0001BC9F \TBLdash Duployan}
+\uniblock{0001BCA0}{0001BCB0}{U-0001BCA0..U-0001BCAF \TBLdash Shorthand Format Controls}
+\uniblock{0001BCB0}{0001D000}{U-0001BCB0..U-0001CFFF \TBLdash No\_Block}
+\uniblock{0001D000}{0001D100}{U-0001D000..U-0001D0FF \TBLdash Byzantine Musical Symbols}
+\uniblock{0001D100}{0001D200}{U-0001D100..U-0001D1FF \TBLdash Musical Symbols}
+\uniblock{0001D200}{0001D250}{U-0001D200..U-0001D24F \TBLdash Ancient Greek Musical Notation}
+\uniblock{0001D250}{0001D2E0}{U-0001D250..U-0001D2DF \TBLdash No\_Block}
+\uniblock{0001D2E0}{0001D300}{U-0001D2E0..U-0001D2FF \TBLdash Mayan Numerals}
+\uniblock{0001D300}{0001D360}{U-0001D300..U-0001D35F \TBLdash Tai Xuan Jing Symbols}
+\uniblock{0001D360}{0001D380}{U-0001D360..U-0001D37F \TBLdash Counting Rod Numerals}
+\uniblock{0001D380}{0001D400}{U-0001D380..U-0001D3FF \TBLdash No\_Block}
+\uniblock{0001D400}{0001D800}{U-0001D400..U-0001D7FF \TBLdash Mathematical Alphanumeric Symbols}
+\uniblock{0001D800}{0001DAB0}{U-0001D800..U-0001DAAF \TBLdash Sutton SignWriting}
+\uniblock{0001DAB0}{0001E000}{U-0001DAB0..U-0001DFFF \TBLdash No\_Block}
+\uniblock{0001E000}{0001E030}{U-0001E000..U-0001E02F \TBLdash Glagolitic Supplement}
+\uniblock{0001E030}{0001E100}{U-0001E030..U-0001E0FF \TBLdash No\_Block}
+\uniblock{0001E100}{0001E150}{U-0001E100..U-0001E14F \TBLdash Nyiakeng Puachue Hmong}
+\uniblock{0001E150}{0001E2C0}{U-0001E150..U-0001E2BF \TBLdash No\_Block}
+\uniblock{0001E2C0}{0001E300}{U-0001E2C0..U-0001E2FF \TBLdash Wancho}
+\uniblock{0001E300}{0001E800}{U-0001E300..U-0001E7FF \TBLdash No\_Block}
+\uniblock{0001E800}{0001E8E0}{U-0001E800..U-0001E8DF \TBLdash Mende Kikakui}
+\uniblock{0001E8E0}{0001E900}{U-0001E8E0..U-0001E8FF \TBLdash No\_Block}
+\uniblock{0001E900}{0001E960}{U-0001E900..U-0001E95F \TBLdash Adlam}
+\uniblock{0001E960}{0001EC70}{U-0001E960..U-0001EC6F \TBLdash No\_Block}
+\uniblock{0001EC70}{0001ECC0}{U-0001EC70..U-0001ECBF \TBLdash Indic Siyaq Numbers}
+\uniblock{0001ECC0}{0001ED00}{U-0001ECC0..U-0001ECFF \TBLdash No\_Block}
+\uniblock{0001ED00}{0001ED50}{U-0001ED00..U-0001ED4F \TBLdash Ottoman Siyaq Numbers}
+\uniblock{0001ED50}{0001EE00}{U-0001ED50..U-0001EDFF \TBLdash No\_Block}
+\uniblock{0001EE00}{0001EF00}{U-0001EE00..U-0001EEFF \TBLdash Arabic Mathematical Alphabetic Symbols}
+\uniblock{0001EF00}{0001F000}{U-0001EF00..U-0001EFFF \TBLdash No\_Block}
+\uniblock{0001F000}{0001F030}{U-0001F000..U-0001F02F \TBLdash Mahjong Tiles}
+\uniblock{0001F030}{0001F0A0}{U-0001F030..U-0001F09F \TBLdash Domino Tiles}
+\uniblock{0001F0A0}{0001F100}{U-0001F0A0..U-0001F0FF \TBLdash Playing Cards}
+\uniblock{0001F100}{0001F200}{U-0001F100..U-0001F1FF \TBLdash Enclosed Alphanumeric Supplement}
+\uniblock{0001F200}{0001F300}{U-0001F200..U-0001F2FF \TBLdash Enclosed Ideographic Supplement}
+\uniblock{0001F300}{0001F600}{U-0001F300..U-0001F5FF \TBLdash Miscellaneous Symbols and Pictographs}
+\uniblock{0001F600}{0001F650}{U-0001F600..U-0001F64F \TBLdash Emoticons}
+\uniblock{0001F650}{0001F680}{U-0001F650..U-0001F67F \TBLdash Ornamental Dingbats}
+\uniblock{0001F680}{0001F700}{U-0001F680..U-0001F6FF \TBLdash Transport and Map Symbols}
+\uniblock{0001F700}{0001F780}{U-0001F700..U-0001F77F \TBLdash Alchemical Symbols}
+\uniblock{0001F780}{0001F800}{U-0001F780..U-0001F7FF \TBLdash Geometric Shapes Extended}
+\uniblock{0001F800}{0001F900}{U-0001F800..U-0001F8FF \TBLdash Supplemental Arrows-C}
+\uniblock{0001F900}{0001FA00}{U-0001F900..U-0001F9FF \TBLdash Supplemental Symbols and Pictographs}
+\uniblock{0001FA00}{0001FA70}{U-0001FA00..U-0001FA6F \TBLdash Chess Symbols}
+\uniblock{0001FA70}{0001FB00}{U-0001FA70..U-0001FAFF \TBLdash Symbols and Pictographs Extended-A}
+\uniblock{0001FB00}{00020000}{U-0001FB00..U-0001FFFF \TBLdash No\_Block}
+\uniblock{00020000}{0002A6E0}{U-00020000..U-0002A6DF \TBLdash CJK Unified Ideographs Extension B}
+\uniblock{0002A6E0}{0002A700}{U-0002A6E0..U-0002A6FF \TBLdash No\_Block}
+\uniblock{0002A700}{0002B740}{U-0002A700..U-0002B73F \TBLdash CJK Unified Ideographs Extension C}
+\uniblock{0002B740}{0002B820}{U-0002B740..U-0002B81F \TBLdash CJK Unified Ideographs Extension D}
+\uniblock{0002B820}{0002CEB0}{U-0002B820..U-0002CEAF \TBLdash CJK Unified Ideographs Extension E}
+\uniblock{0002CEB0}{0002EBF0}{U-0002CEB0..U-0002EBEF \TBLdash CJK Unified Ideographs Extension F}
+\uniblock{0002EBF0}{0002F800}{U-0002EBF0..U-0002F7FF \TBLdash No\_Block}
+\uniblock{0002F800}{0002FA20}{U-0002F800..U-0002FA1F \TBLdash CJK Compatibility Ideographs Supplement}
+\uniblock{0002FA20}{000E0000}{U-0002FA20..U-000DFFFF \TBLdash No\_Block}
+\uniblock{000E0000}{000E0080}{U-000E0000..U-000E007F \TBLdash Tags}
+\uniblock{000E0080}{000E0100}{U-000E0080..U-000E00FF \TBLdash No\_Block}
+\uniblock{000E0100}{000E01F0}{U-000E0100..U-000E01EF \TBLdash Variation Selectors Supplement}
+\uniblock{000E01F0}{000F0000}{U-000E01F0..U-000EFFFF \TBLdash No\_Block}
+\uniblock{000F0000}{00100000}{U-000F0000..U-000FFFFF \TBLdash Supplementary Private Use Area-A}
+\uniblock{00100000}{00110000}{U-00100000..U-0010FFFF \TBLdash Supplementary Private Use Area-B}
+
+\end{document}
