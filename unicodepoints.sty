@@ -130,18 +130,29 @@
  }%
 }{⮡}}%
 
+% Make #2 robust *and* wrap within \texorpdfstring{#2}{#1}
+\def\MakeRobustChar#1#2{%
+ \MakeRobustCommand#2%
+ \expandafter\let\expandafter\MR@temp\csname\expandafter\@gobble\string#2 \endcsname%
+ \expandafter\let\csname\expandafter\@gobble\string#2 @unicodepoints\endcsname\MR@temp%
+ \renewcommand{\MR@temp}{%
+  \texorpdfstring{\csname \expandafter\@gobble\string#2 @unicodepoints\endcsname}{#1}%
+ }%
+ \expandafter\let\csname\expandafter\@gobble\string#2 \endcsname\MR@temp%
+}%
+
 % Make some things robust
 \MakeRobustCommand{\tone}%
-\MakeRobustCommand{\underbar}%
-\MakeRobustCommand{\overbridge}%
-\MakeRobustCommand{\subdoublebar}%
-\MakeRobustCommand{\subdoublevert}%
-\MakeRobustCommand{\subcorner}%
-\MakeRobustCommand{\crtilde}%
-\MakeRobustCommand{\dottedtilde}%
-\MakeRobustCommand{\doubletilde}%
-\MakeRobustCommand{\spreadlips}%
-\MakeRobustCommand{\whistle}%
+\MakeRobustChar{̲}{\underbar}%
+\MakeRobustChar{͆}{\overbridge}%
+\MakeRobustChar{͇}{\subdoublebar}%
+\MakeRobustChar{͈}{\subdoublevert}%
+\MakeRobustChar{͉}{\subcorner}%
+\MakeRobustChar{͊}{\crtilde}%
+\MakeRobustChar{͋}{\dottedtilde}%
+\MakeRobustChar{͌}{\doubletilde}%
+\MakeRobustChar{͍}{\spreadlips}%
+\MakeRobustChar{͎}{\whistle}%
 
 % Individual definitions (sorted)
 \newunicodechar{ħ}{\textcrh}%
