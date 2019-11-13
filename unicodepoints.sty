@@ -37,7 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2018/08/17 2.4~ Unicode codepoints]%
+\ProvidesPackage{unicodepoints}[2019/11/12 2.4 Unicode codepoints]%
 \makeatletter%
 
 \ifx\UTFviii@defined\@undefined%
@@ -1953,6 +1953,10 @@
 \renewunicodechar{ﬅ}{st}%
 \renewunicodechar{ﬆ}{st}%
 \renewunicodechar{﻿}{\ifhmode\nobreak\fi}%
+\switchencodingunicodechar{𐅄}{LGR}%
+\switchencodingunicodechar{𐅅}{LGR}%
+\switchencodingunicodechar{𐅆}{LGR}%
+\switchencodingunicodechar{𐅇}{LGR}%
 \newunicodechar{𝐀}{$\mathbf{A}$}%
 \newunicodechar{𝐁}{$\mathbf{B}$}%
 \newunicodechar{𝐂}{$\mathbf{C}$}%
