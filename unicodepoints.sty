@@ -1,6 +1,6 @@
 % -*- mode: tex -*-
 %-
-% Copyright © 2018
+% Copyright © 2018, 2020
 %	mirabilos <m@mirbsd.org>
 % Copyright © 2017, 2019
 %	mirabilos <t.glaser@tarent.de>
@@ -37,7 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2019/11/12 2.5 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
+\ProvidesPackage{unicodepoints}[2020/06/12 2.6 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
 
 \ifx\UTFviii@defined\@undefined%
  \PackageError{unicodepoints}{This package requires UTF-8 input encoding}%
@@ -1173,15 +1173,21 @@
 \newunicodechar{ }{\unicodepoints@hphantom{0}}%
 \newunicodechar{ }{\unicodepoints@hphantom{;}}%
 \newunicodechar{ }{\kern.2em}%
-\newunicodechar{ }{\kern.1em}%
+\newunicodechar{ }{\kern.16667em}%
 \newunicodechar{​}{\hspace{0pt}}%
 \renewunicodechar{‑}{\unicodepoints@nbdash}%
 \newunicodechar{‗}{\subdoublebar{ }}%
 \newunicodechar{‣}{\textifsymbol[ifgeo]{116}}%
 \newunicodechar{․}{.}%
-\newunicodechar{‥}{.\,.}%
+\newunicodechar{‥}{%
+ .\kern\fontdimen3\font
+ .}%
+\renewunicodechar{…}{%
+ .\kern\fontdimen3\font
+ .\kern\fontdimen3\font
+ .}%
 \newunicodechar{ }{\\}%
-\newunicodechar{ }{\,}%
+\newunicodechar{ }{\leavevmode\nobreak\kern.2em}%
 \newunicodechar{′}{\textasciiacute}%
 \newunicodechar{″}{\textacutedbl}%
 \newunicodechar{‵}{\textasciigrave}%
