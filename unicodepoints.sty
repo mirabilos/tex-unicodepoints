@@ -1,6 +1,6 @@
 % -*- mode: tex -*-
 %-
-% Copyright © 2018, 2020
+% Copyright © 2018, 2020, 2021
 %	mirabilos <m@mirbsd.org>
 % Copyright © 2017, 2019
 %	mirabilos <t.glaser@tarent.de>
@@ -37,7 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2020/06/12 2.6 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
+\ProvidesPackage{unicodepoints}[2021/11/17 2.7 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
 
 \ifx\UTFviii@defined\@undefined%
  \PackageError{unicodepoints}{This package requires UTF-8 input encoding}%
@@ -70,6 +70,14 @@
 \RequirePackage[extra,tone]{tipa}%
 \RequirePackage{wasysym}%
 \RequirePackage{xfrac}%
+
+\makeatletter%
+
+% If MusiXTeX is not loaded…
+\ifx\musixchar\@undefined%
+ \font\musixfont=musix20%
+ \def\musixchar{\musixfont\char}%
+\fi%
 
 % Change definition of \#1 to {#2\#1} (wrapping)
 \newcommand{\unicodepoints@boxwrap}[2]{%
@@ -106,6 +114,22 @@
   }%
  }%
 }{⚠}}%
+
+% Render command for 𝄐 (U-0001D110) and  ͒ (U+0352, combining)
+\DeclareRobustCommand\unicodepoints@enwideFermata{%
+ \resizebox{0.5em}{!}{\hbox to 14pt{\kern3pt\musixchar80\hss}}%
+}%
+\DeclareRobustCommand\unicodepoints@normalFermata{%
+ \texorpdfstring{\unicodepoints@enwideFermata}{𝄐}%
+}%
+\DeclareRobustCommand\unicodepoints@combiningFermata{%
+ \texorpdfstring{\llap{\raisebox{1ex}{\unicodepoints@enwideFermata}}}{͒}%
+}%
+\DeclareRobustCommand\unicodepoints@downFermata{%
+ \texorpdfstring{\raisebox{1.333ex}{%
+  \resizebox{0.5em}{!}{\hbox to 14pt{\kern3pt\musixchar81\hss}}%
+ }%
+}{𝄑}}%
 
 % Specific code for below
 \DeclareRobustCommand{\unicodepoints@hphantom}[1]{\hphantom{#1}}%
@@ -406,6 +430,7 @@
 \newunicodechar{͌}{\doubletilde}%
 \newunicodechar{͍}{\spreadlips}%
 \newunicodechar{͎}{\whistle}%
+\newunicodechar{͒}{\unicodepoints@combiningFermata}%
 \newunicodechar{͡}{\t}%
 \switchencodingunicodechar{ʹ}{LGR}%
 \switchencodingunicodechar{͵}{LGR}%
@@ -1962,6 +1987,8 @@
 \switchencodingunicodechar{𐅅}{LGR}%
 \switchencodingunicodechar{𐅆}{LGR}%
 \switchencodingunicodechar{𐅇}{LGR}%
+\newunicodechar{𝄐}{\unicodepoints@normalFermata}%
+\newunicodechar{𝄑}{\unicodepoints@downFermata}%
 \newunicodechar{𝐀}{$\mathbf{A}$}%
 \newunicodechar{𝐁}{$\mathbf{B}$}%
 \newunicodechar{𝐂}{$\mathbf{C}$}%
