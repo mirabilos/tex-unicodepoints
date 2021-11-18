@@ -37,7 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2021/11/17 2.7 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
+\ProvidesPackage{unicodepoints}[2021/11/17 2.8 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
 
 \ifx\UTFviii@defined\@undefined%
  \PackageError{unicodepoints}{This package requires UTF-8 input encoding}%
@@ -75,8 +75,7 @@
 
 % If MusiXTeX is not loaded…
 \ifx\musixchar\@undefined%
- \font\musixfont=musix20%
- \def\musixchar{\musixfont\char}%
+ \font\musictwenty=musix20%
 \fi%
 
 % Change definition of \#1 to {#2\#1} (wrapping)
@@ -117,7 +116,7 @@
 
 % Render command for 𝄐 (U-0001D110) and  ͒ (U+0352, combining)
 \DeclareRobustCommand\unicodepoints@enwideFermata{%
- \resizebox{0.5em}{!}{\hbox to 14pt{\kern3pt\musixchar80\hss}}%
+ \resizebox{0.5em}{!}{\hbox to 14pt{\kern3pt\musictwenty\char80\hss}}%
 }%
 \DeclareRobustCommand\unicodepoints@normalFermata{%
  \texorpdfstring{\unicodepoints@enwideFermata}{𝄐}%
@@ -127,7 +126,7 @@
 }%
 \DeclareRobustCommand\unicodepoints@downFermata{%
  \texorpdfstring{\raisebox{1.333ex}{%
-  \resizebox{0.5em}{!}{\hbox to 14pt{\kern3pt\musixchar81\hss}}%
+  \resizebox{0.5em}{!}{\hbox to 14pt{\kern3pt\musictwenty\char81\hss}}%
  }%
 }{𝄑}}%
 
@@ -2368,4 +2367,5 @@
 \newunicodechar{𝟾}{$\mathtt{8}$}%
 \newunicodechar{𝟿}{$\mathtt{9}$}%
 
+\makeatother%
 \endinput
