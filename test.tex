@@ -2,10 +2,15 @@
 
 \documentclass{article}%
 
+\usepackage{fix-cm}% or use a different font
 \usepackage[utf8]{inputenc}%
 \usepackage[TS1,LGR,OT2,T2B,T2C,X2,T1]{fontenc}%
 \usepackage{unicodepoints}%
 \usepackage[pdftex,unicode]{hyperref}%
+
+% fix stupid anglo-american indent default behaviour
+\setlength{\parskip}{0.3cm plus 5mm minus 1mm}%
+\setlength{\parindent}{0cm}%
 
 \begin{document}
 
