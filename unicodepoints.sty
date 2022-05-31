@@ -37,7 +37,7 @@
 % \usepackage[utf8]{inputenc}%
 
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{unicodepoints}[2021/11/17 2.8 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
+\ProvidesPackage{unicodepoints}[2022/05/31 2.9 Unicode codepoints]% for Tₑχ/LᴬTᴇΧ
 
 \ifx\UTFviii@defined\@undefined%
  \PackageError{unicodepoints}{This package requires UTF-8 input encoding}%
@@ -824,7 +824,7 @@
 \newunicodechar{Ḋ}{\.{D}}%
 \newunicodechar{ḋ}{\.{d}}%
 \newunicodechar{Ḍ}{\d{D}}%
-\newunicodechar{ḍ}{\d{d}}%
+\renewunicodechar{ḍ}{\d{d}}%
 \newunicodechar{Ḏ}{\b{D}}%
 \newunicodechar{ḏ}{\b{d}}%
 \newunicodechar{Ḑ}{\c{D}}%
@@ -835,28 +835,28 @@
 \newunicodechar{ḙ}{\textsubcircum{e}}%
 \newunicodechar{Ḛ}{\textsubtilde{E}}%
 \newunicodechar{ḛ}{\textsubtilde{e}}%
-\newunicodechar{Ḟ}{\.{F}}%
-\newunicodechar{ḟ}{\.{f}}%
+\renewunicodechar{Ḟ}{\.{F}}%
+\renewunicodechar{ḟ}{\.{f}}%
 \renewunicodechar{Ḡ}{\={G}}%
 \renewunicodechar{ḡ}{\={g}}%
 \newunicodechar{Ḣ}{\.{H}}%
 \newunicodechar{ḣ}{\.{h}}%
 \newunicodechar{Ḥ}{\d{H}}%
-\newunicodechar{ḥ}{\d{h}}%
+\renewunicodechar{ḥ}{\d{h}}%
 \newunicodechar{Ḧ}{\"{H}}%
 \newunicodechar{ḧ}{\"{h}}%
 \newunicodechar{Ḩ}{\c{H}}%
 \newunicodechar{ḩ}{\c{h}}%
 \newunicodechar{Ḭ}{\textsubtilde{I}}%
 \newunicodechar{ḭ}{\textsubtilde{i}}%
-\newunicodechar{Ḱ}{\'{K}}%
-\newunicodechar{ḱ}{\'{k}}%
+\renewunicodechar{Ḱ}{\'{K}}%
+\renewunicodechar{ḱ}{\'{k}}%
 \newunicodechar{Ḳ}{\d{K}}%
 \newunicodechar{ḳ}{\d{k}}%
 \newunicodechar{Ḵ}{\b{K}}%
 \newunicodechar{ḵ}{\b{k}}%
 \newunicodechar{Ḷ}{\d{L}}%
-\newunicodechar{ḷ}{\d{l}}%
+\renewunicodechar{ḷ}{\d{l}}%
 \newunicodechar{Ḻ}{\b{L}}%
 \newunicodechar{ḻ}{\b{l}}%
 \newunicodechar{Ḽ}{\textsubcircum{L}}%
@@ -866,11 +866,11 @@
 \newunicodechar{Ṁ}{\.{M}}%
 \newunicodechar{ṁ}{\.{m}}%
 \newunicodechar{Ṃ}{\d{M}}%
-\newunicodechar{ṃ}{\d{m}}%
+\renewunicodechar{ṃ}{\d{m}}%
 \newunicodechar{Ṅ}{\.{N}}%
-\newunicodechar{ṅ}{\.{n}}%
+\renewunicodechar{ṅ}{\.{n}}%
 \newunicodechar{Ṇ}{\d{N}}%
-\newunicodechar{ṇ}{\d{n}}%
+\renewunicodechar{ṇ}{\d{n}}%
 \newunicodechar{Ṉ}{\b{N}}%
 \newunicodechar{ṉ}{\b{n}}%
 \newunicodechar{Ṋ}{\textsubcircum{N}}%
@@ -882,17 +882,17 @@
 \newunicodechar{Ṙ}{\.{R}}%
 \newunicodechar{ṙ}{\.{r}}%
 \newunicodechar{Ṛ}{\d{R}}%
-\newunicodechar{ṛ}{\d{r}}%
+\renewunicodechar{ṛ}{\d{r}}%
 \newunicodechar{Ṟ}{\b{R}}%
 \newunicodechar{ṟ}{\b{r}}%
 \newunicodechar{Ṡ}{\.{S}}%
 \newunicodechar{ṡ}{\.{s}}%
 \newunicodechar{Ṣ}{\d{S}}%
-\newunicodechar{ṣ}{\d{s}}%
+\renewunicodechar{ṣ}{\d{s}}%
 \newunicodechar{Ṫ}{\.{T}}%
 \newunicodechar{ṫ}{\.{t}}%
 \newunicodechar{Ṭ}{\d{T}}%
-\newunicodechar{ṭ}{\d{t}}%
+\renewunicodechar{ṭ}{\d{t}}%
 \newunicodechar{Ṯ}{\b{T}}%
 \newunicodechar{ṯ}{\b{t}}%
 \newunicodechar{Ṱ}{\textsubcircum{T}}%
@@ -921,10 +921,10 @@
 \newunicodechar{ẋ}{\.{x}}%
 \newunicodechar{Ẍ}{\"{X}}%
 \newunicodechar{ẍ}{\"{x}}%
-\newunicodechar{Ẏ}{\.{Y}}%
-\newunicodechar{ẏ}{\.{y}}%
-\newunicodechar{Ẑ}{\^{Z}}%
-\newunicodechar{ẑ}{\^{z}}%
+\renewunicodechar{Ẏ}{\.{Y}}%
+\renewunicodechar{ẏ}{\.{y}}%
+\renewunicodechar{Ẑ}{\^{Z}}%
+\renewunicodechar{ẑ}{\^{z}}%
 \newunicodechar{Ẓ}{\d{Z}}%
 \newunicodechar{ẓ}{\d{z}}%
 \newunicodechar{Ẕ}{\b{Z}}%
@@ -946,8 +946,8 @@
 \newunicodechar{ọ}{\d{o}}%
 \newunicodechar{Ụ}{\d{U}}%
 \newunicodechar{ụ}{\d{u}}%
-\newunicodechar{Ỳ}{\`{Y}}%
-\newunicodechar{ỳ}{\`{y}}%
+\renewunicodechar{Ỳ}{\`{Y}}%
+\renewunicodechar{ỳ}{\`{y}}%
 \newunicodechar{Ỵ}{\d{Y}}%
 \newunicodechar{ỵ}{\d{y}}%
 \newunicodechar{Ỹ}{\~{Y}}%
